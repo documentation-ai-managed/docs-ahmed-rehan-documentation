@@ -1,0 +1,92 @@
+---
+title: Introduction
+description: Overview of Ahmed Rehan Documentation and its core capabilities
+---
+
+## Getting Started
+
+Welcome to Ahmed Rehan Documentation, your comprehensive platform for organizing and managing project documentation. This documentation space provides powerful tools to create, maintain, and share technical documentation across all your projects. Whether you're building APIs, developing software, or managing team knowledge, Ahmed Rehan Documentation offers an intuitive interface to keep everything structured and accessible.
+
+<Columns cols={3}>
+  <Card title="Quick Setup" icon="zap" href="configuration">
+    Get your documentation space configured in minutes with our step-by-step guide.
+  </Card>
+  <Card title="API Integration" icon="code" href="api-integration">
+    Learn how to integrate external APIs and automate documentation workflows.
+  </Card>
+  <Card title="Best Practices" icon="star" href="best-practices">
+    Discover proven strategies for creating effective, maintainable documentation.
+  </Card>
+</Columns>
+
+## Key Features
+
+<Tabs>
+  <Tab title="Organization" icon="folder">
+    Ahmed Rehan Documentation helps you categorize your docs into logical sections, making it easy for teams to find information quickly. You can create hierarchical structures with projects, categories, and subtopics.
+    
+    <Callout kind="tip">Use consistent naming conventions for your documentation folders to improve searchability.</Callout>
+    
+    <Steps>
+      <Step title="Create Project" icon="plus">
+        Start by creating a new project in your dashboard.
+      </Step>
+      <Step title="Add Categories" icon="folder">
+        Organize content into categories like API docs, guides, and tutorials.
+      </Step>
+      <Step title="Upload Documents" icon="upload">
+        Import existing markdown files or write new content directly in the editor.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Collaboration" icon="users">
+    Enable team collaboration with real-time editing, version control, and review workflows. Multiple team members can work on documentation simultaneously.
+    
+    <Expandable title="Version Control Features" default-open="false">
+      Track changes with automatic versioning, compare revisions, and restore previous versions when needed. All edits are logged with timestamps and user information.
+    </Expandable>
+    
+    <Expandable title="Review Workflows" default-open="false">
+      Set up approval processes for documentation changes, ensuring quality control before publishing updates to your team or public audience.
+    </Expandable>
+  </Tab>
+  <Tab title="Integration" icon="plug">
+    Connect with popular tools and platforms to automate documentation processes. Integrate with Git repositories, CI/CD pipelines, and communication tools.
+    
+    <CodeGroup tabs="Webhook,API Key">
+      ```json
+      {
+        "event": "doc_updated",
+        "project_id": "123",
+        "changes": {
+          "file": "api-reference.mdx",
+          "author": "john.doe@example.com"
+        }
+      }
+      ```
+      ```javascript
+      const apiKey = 'your_api_key_here';
+      const headers = { 'Authorization': `Bearer ${apiKey}` };
+      fetch('/api/docs/sync', { headers })
+        .then(response => response.json())
+        .then(data => console.log('Sync completed:', data));
+      ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+## Benefits
+
+<ExpandableGroup>
+  <Expandable title="Improved Team Productivity" default-open="true">
+    Centralized documentation reduces time spent searching for information and minimizes knowledge silos within your organization.
+  </Expandable>
+  <Expandable title="Enhanced Developer Experience" default-open="false">
+    Provide clear, up-to-date documentation that helps developers integrate with your APIs and understand your codebase more effectively.
+  </Expandable>
+  <Expandable title="Scalable Knowledge Management" default-open="false">
+    As your projects grow, Ahmed Rehan Documentation scales with you, supporting multiple teams, complex hierarchies, and extensive content libraries.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="info">Ready to get started? Head to our configuration guide to set up your first documentation space.</Callout>

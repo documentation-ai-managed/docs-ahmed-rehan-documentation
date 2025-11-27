@@ -1,0 +1,123 @@
+---
+title: Configuration
+description: Step-by-step guide to setting up and configuring your Ahmed Rehan Documentation space
+---
+
+## Setting Up Your Account
+
+To get started with Ahmed Rehan Documentation, you first need to create an account and configure your initial workspace. This process takes just a few minutes and gives you full control over your documentation environment.
+
+<Steps>
+  <Step title="Create Account" icon="user">
+    Visit the signup page and provide your email address and password. You'll receive a verification email to activate your account.
+    
+    <CodeGroup tabs="Email Verification,Account Setup">
+      ```bash
+      # After clicking verification link in email
+      curl -X POST https://api.ahmedrehan.com/auth/verify \
+        -H "Content-Type: application/json" \
+        -d '{"token":"verification_token_here"}'
+      ```
+      ```javascript
+      // In your application
+      const userData = {
+        email: 'developer@company.com',
+        name: 'John Developer',
+        organization: 'Tech Corp'
+      };
+      
+      fetch('/api/users/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Configure Workspace" icon="settings">
+    Once logged in, create your first workspace. Choose a descriptive name and set up basic permissions for your team.
+    
+    <Expandable title="Workspace Settings" default-open="false">
+      Configure timezone, default language, and notification preferences. You can also set up SSO integration for enterprise accounts.
+    </Expandable>
+  </Step>
+  <Step title="Invite Team Members" icon="users">
+    Add your team members by sending invitations. Assign appropriate roles like admin, editor, or viewer to control access levels.
+    
+    <Callout kind="tip">Use role-based permissions to ensure team members only access documentation relevant to their responsibilities.</Callout>
+  </Step>
+</Steps>
+
+## Project Organization
+
+Organize your documentation into projects that reflect your actual development structure. This helps maintain clear boundaries between different systems and teams.
+
+<Columns cols={2}>
+  <Card title="Project Structure" icon="folder" href="#project-structure">
+    Learn how to create logical project hierarchies.
+  </Card>
+  <Card title="Access Control" icon="lock" href="#access-control">
+    Set up permissions and sharing rules.
+  </Card>
+</Columns>
+
+<Tabs>
+  <Tab title="Basic Setup" icon="settings">
+    For simple projects, create a single project with multiple documentation categories.
+    
+    <CodeGroup tabs="Project Creation,Category Setup">
+      ```bash
+      curl -X POST https://api.ahmedrehan.com/projects \
+        -H "Authorization: Bearer YOUR_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "name": "E-commerce Platform",
+          "description": "Documentation for our main e-commerce API"
+        }'
+      ```
+      ```javascript
+      // Add categories to project
+      const categories = [
+        { name: 'API Reference', slug: 'api' },
+        { name: 'Integration Guides', slug: 'guides' },
+        { name: 'SDK Documentation', slug: 'sdk' }
+      ];
+      
+      categories.forEach(cat => {
+        fetch(`/api/projects/${projectId}/categories`, {
+          method: 'POST',
+          headers: authHeaders,
+          body: JSON.stringify(cat)
+        });
+      });
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="Advanced Configuration" icon="sliders">
+    For complex organizations, set up multiple projects with cross-references and shared components.
+    
+    <Expandable title="Cross-Project References" default-open="false">
+      Link related documentation across projects using reference links and shared code examples.
+    </Expandable>
+    
+    <Callout kind="info">Advanced configurations require admin permissions and may involve custom integrations.</Callout>
+  </Tab>
+</Tabs>
+
+## Customization Options
+
+Ahmed Rehan Documentation offers extensive customization to match your brand and workflow requirements.
+
+<ExpandableGroup>
+  <Expandable title="Theme Customization" default-open="true">
+    Customize colors, fonts, and layouts to match your organization's branding. Upload custom logos and favicons for a professional appearance.
+  </Expandable>
+  <Expandable title="Workflow Automation" default-open="false">
+    Set up automated processes for documentation updates, such as triggering builds when code changes or sending notifications for review requests.
+  </Expandable>
+  <Expandable title="Integration Settings" default-open="false">
+    Configure connections to external tools like GitHub, Slack, or Jira to streamline your documentation workflow.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="success">Your documentation space is now configured and ready for content creation!</Callout>

@@ -1,0 +1,218 @@
+---
+title: API Integration
+description: Guide to integrating external APIs and automating documentation workflows in Ahmed Rehan Documentation
+---
+
+## Understanding API Integration
+
+Ahmed Rehan Documentation provides robust API integration capabilities that allow you to automate documentation processes and keep content synchronized with your development workflow. Whether you're pulling in API specifications, updating content from code repositories, or triggering builds on documentation changes, our API endpoints make it possible.
+
+<Columns cols={3}>
+  <Card title="REST API" icon="code" href="#rest-api">
+    Access all documentation features programmatically.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="#webhooks">
+    Receive real-time notifications for documentation events.
+  </Card>
+  <Card title="SDK Libraries" icon="package" href="#sdk-libraries">
+    Use official SDKs for popular programming languages.
+  </Card>
+</Columns>
+
+## Getting Started with the API
+
+To use the Ahmed Rehan Documentation API, you first need to generate an API key from your account settings. This key provides authenticated access to all API endpoints.
+
+<Steps>
+  <Step title="Generate API Key" icon="key">
+    Navigate to your account settings and create a new API key. Store it securely as it provides full access to your documentation.
+    
+    <CodeGroup tabs="cURL,Python">
+      ```bash
+      # Generate a new API key
+      curl -X POST https://api.ahmedrehan.com/auth/keys \
+        -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{"name":"Documentation Sync","permissions":["read","write"]}'
+      ```
+      ```python
+      import requests
+      
+      headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+      }
+      
+      key_data = {
+        'name': 'Auto Sync Service',
+        'permissions': ['read', 'write', 'delete']
+      }
+      
+      response = requests.post(
+        'https://api.ahmedrehan.com/auth/keys',
+        headers=headers,
+        json=key_data
+      )
+      
+      api_key = response.json()['key']
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Test Authentication" icon="check-circle">
+    Verify your API key works by making a test request to retrieve your projects list.
+  </Step>
+  <Step title="Implement Integration" icon="plug">
+    Build your integration logic using the API endpoints for reading and writing documentation.
+  </Step>
+</Steps>
+
+## Webhook Configuration
+
+Webhooks allow you to receive real-time notifications when documentation events occur, enabling automated workflows and integrations.
+
+<Tabs>
+  <Tab title="Setting Up Webhooks" icon="settings">
+    Configure webhook endpoints to listen for documentation changes.
+    
+    <Expandable title="Supported Events" default-open="false">
+      Receive notifications for document creation, updates, deletions, and project changes.
+    </Expandable>
+    
+    <CodeGroup tabs="Webhook Payload,Endpoint Setup">
+      ```json
+      {
+        "event": "document.updated",
+        "timestamp": "2024-01-15T10:30:00Z",
+        "project": {
+          "id": "proj_123",
+          "name": "API Documentation"
+        },
+        "document": {
+          "id": "doc_456",
+          "path": "api-reference/authentication.mdx",
+          "version": "1.2.0"
+        },
+        "changes": {
+          "author": "jane.doe@company.com",
+          "summary": "Updated authentication flow diagram"
+        }
+      }
+      ```
+      ```bash
+      # Register webhook endpoint
+      curl -X POST https://api.ahmedrehan.com/webhooks \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "url": "https://your-app.com/webhooks/docs",
+          "events": ["document.updated", "project.created"],
+          "secret": "your_webhook_secret"
+        }'
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="Handling Webhooks" icon="code">
+    Process incoming webhook payloads in your application.
+    
+    <Callout kind="info">Always verify webhook signatures to ensure authenticity and prevent security issues.</Callout>
+    
+    <CodeGroup tabs="Node.js,Python">
+      ```javascript
+      const crypto = require('crypto');
+      
+      function verifyWebhook(payload, signature, secret) {
+        const expectedSignature = crypto
+          .createHmac('sha256', secret)
+          .update(payload)
+          .digest('hex');
+        
+        return crypto.timingSafeEqual(
+          Buffer.from(signature, 'hex'),
+          Buffer.from(expectedSignature, 'hex')
+        );
+      }
+      
+      // In your webhook handler
+      app.post('/webhooks/docs', (req, res) => {
+        const isValid = verifyWebhook(
+          JSON.stringify(req.body),
+          req.headers['x-webhook-signature'],
+          process.env.WEBHOOK_SECRET
+        );
+        
+        if (!isValid) {
+          return res.status(401).send('Invalid signature');
+        }
+        
+        // Process the webhook
+        handleDocumentationUpdate(req.body);
+        res.sendStatus(200);
+      });
+      ```
+      ```python
+      import hmac
+      import hashlib
+      import json
+      
+      def verify_webhook(payload, signature, secret):
+        expected = hmac.new(
+          secret.encode(),
+          json.dumps(payload, separators=(',', ':')).encode(),
+          hashlib.sha256
+        ).hexdigest()
+        
+        return hmac.compare_digest(signature, expected)
+      
+      # Flask webhook handler
+      @app.route('/webhooks/docs', methods=['POST'])
+      def handle_webhook():
+        payload = request.get_json()
+        signature = request.headers.get('X-Webhook-Signature')
+        
+        if not verify_webhook(payload, signature, os.getenv('WEBHOOK_SECRET')):
+          abort(401)
+          
+        process_docs_update(payload)
+        return '', 200
+      ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+## SDK Libraries
+
+Use our official SDK libraries to simplify API integration and reduce development time.
+
+<ExpandableGroup>
+  <Expandable title="JavaScript SDK" default-open="true">
+    Full-featured SDK for Node.js and browser environments with promise-based API and automatic retry logic.
+    
+    <CodeGroup tabs="Installation,Usage">
+      ```bash
+      npm install @ahmedrehan/docs-sdk
+      ```
+      ```javascript
+      const { AhmedRehanDocs } = require('@ahmedrehan/docs-sdk');
+      
+      const client = new AhmedRehanDocs({
+        apiKey: process.env.DOCS_API_KEY
+      });
+      
+      // Sync documentation from GitHub
+      await client.projects('my-project').documents.sync({
+        source: 'github',
+        repo: 'company/docs',
+        branch: 'main'
+      });
+      ```
+    </CodeGroup>
+  </Expandable>
+  <Expandable title="Python SDK" default-open="false">
+    Python library with comprehensive type hints and async support for high-performance integrations.
+  </Expandable>
+  <Expandable title="Go SDK" default-open="false">
+    Lightweight Go library optimized for microservices and cloud-native applications.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="success">With API integration configured, your documentation workflow is now fully automated!</Callout>
